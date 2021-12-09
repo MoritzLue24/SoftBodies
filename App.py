@@ -20,7 +20,8 @@ class App:
         self.propertiesWidth = 300
         self.propertiesSurf = PhysicsEngine.Surface(pygame.Vector2(self.width - self.propertiesWidth, 0),
                                                     pygame.Vector2(self.propertiesWidth, height))
-        self.mainSurf = PhysicsEngine.Surface(pygame.Vector2(0, 0), pygame.Vector2(width - self.propertiesWidth, height))
+        self.mainSurf = PhysicsEngine.Surface(pygame.Vector2(0, 0),
+                                              pygame.Vector2(width - self.propertiesWidth, height))
 
         self.particles = []
         self.springs = []
@@ -31,26 +32,29 @@ class App:
         self.paused = False
 
         self.restLengthLabel = self.font.render("Rest Length", True, (255, 255, 255))
-        self.restLengthInput = PhysicsEngine.InputField(pygame.Vector2(self.propertiesWidth//2 + 15, 10), self.font, self.propertiesSurf)
+        self.restLengthInput = PhysicsEngine.InputField(pygame.Vector2(self.propertiesWidth // 2 + 15, 10), self.font,
+                                                        self.propertiesSurf)
         self.restLengthInput.text = "DEFAULT"
 
         self.gravityLabel = self.font.render("Gravity", True, (255, 255, 255))
-        self.gravityInput = PhysicsEngine.InputField(pygame.Vector2(self.propertiesWidth//2 + 15, 45), self.font, self.propertiesSurf)
+        self.gravityInput = PhysicsEngine.InputField(pygame.Vector2(self.propertiesWidth // 2 + 15, 45), self.font,
+                                                     self.propertiesSurf)
         self.gravityInput.text = f"{PhysicsEngine.Physics.gravity.x}, {PhysicsEngine.Physics.gravity.y}"
 
         self.springForceLabel = self.font.render("Spring Force", True, (255, 255, 255))
-        self.springForceInput = PhysicsEngine.InputField(pygame.Vector2(self.propertiesWidth // 2 + 15, 80), self.font, self.propertiesSurf)
+        self.springForceInput = PhysicsEngine.InputField(pygame.Vector2(self.propertiesWidth // 2 + 15, 80), self.font,
+                                                         self.propertiesSurf)
         self.springForceInput.text = str(PhysicsEngine.Spring.DEFAULT_SPRING_FORCE)
 
         self.scriptFilePath = ""
         self.reloadScriptInput = PhysicsEngine.Button(pygame.Vector2(30, self.height - 170), "Reload Script",
-                                                    lambda: self.runFileScript(True), self.font, self.propertiesSurf)
+                                                      lambda: self.runFileScript(True), self.font, self.propertiesSurf)
         self.reloadScriptInput.padding = pygame.Vector2(75, 12)
         self.loadScriptInput = PhysicsEngine.Button(pygame.Vector2(30, self.height - 70), "Load Script",
                                                     self.runFileScript, self.font, self.propertiesSurf)
         self.loadScriptInput.padding = pygame.Vector2(75, 12)
 
-    def runFileScript(self, reload: bool=False):
+    def runFileScript(self, reload: bool = False):
         if (self.scriptFilePath == "") and reload:
             print("Cant reload script if script was never loaded.")
             return
@@ -58,7 +62,7 @@ class App:
         if not reload:
             root = tk.Tk()
             root.withdraw()
-            self.scriptFilePath = tkinter.filedialog.askopenfilename()
+            self.scriptFilePath = tk.filedialog.askopenfilename()
 
             if not self.scriptFilePath.endswith(".ph"):
                 print("Invalid file format.")
@@ -72,7 +76,8 @@ class App:
             detail = err.args[0]
             cl, exc, tb = sys.exc_info()
             bs = "\\"
-            print(f"[{self.scriptFilePath.replace(os.getcwd().replace(bs, '/'), '')}, Line {traceback.extract_tb(tb)[-1][1]}]: {detail}")
+            print(
+                f"[{self.scriptFilePath.replace(os.getcwd().replace(bs, '/'), '')}, Line {traceback.extract_tb(tb)[-1][1]}]: {detail}")
 
     def draw(self):
         self.mainSurf.fill((243, 236, 176))
@@ -148,7 +153,8 @@ class App:
                         self.selected_particles[0], self.selected_particles[1],
                         int(self.restLengthInput.text)))
             except ValueError:
-                restLength = PhysicsEngine.Utils.getLineLength(self.selected_particles[0].position, self.selected_particles[1].position)
+                restLength = PhysicsEngine.Utils.getLineLength(self.selected_particles[0].position,
+                                                               self.selected_particles[1].position)
                 self.springs.append(PhysicsEngine.Spring(
                     self.selected_particles[0], self.selected_particles[1], restLength))
 
